@@ -1,0 +1,15 @@
+docker-compose up -d 
+
+sudo docker start <container_name_or_id>
+
+sudo docker stop $(docker ps -q) && docker rm $(docker ps -aq)
+
+docker exec -it <container_name_or_id> <command>
+
+sudo docker-compose up -d --build
+sudo docker stop
+sudo docker rm
+
+ssh-keygen -t rsa -b 4096 -f space-1/keys/key.pem -N ""
+
+ansible-playbook playbook-1.yml

@@ -1,0 +1,10 @@
+version: '3'
+services:
+  myapp:
+    tty: true
+    build:
+      context: .  # Use the current directory as the build context
+      dockerfile: Dockerfile
+    container_name: myapp1
+    volumes:
+      - ./space-1:/home/space

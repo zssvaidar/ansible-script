@@ -1,0 +1,53 @@
+- hosts: localhost
+  become: yes
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: Install the package
+      apt:
+        name: vim
+        state: present
+
+    # - name: Source the environment file
+    #   shell: bash .env.sh && echo "Environment sourced"
+    #   environment:
+    #     PATH: "{{ ansible_env.PATH }}"
+    #   register: sourced_env
+    #   changed_when: true  # Indicate that this task will not always change state
+
+    # - name: Display environment variables
+    #   debug:
+    #     var: item
+    #   loop: "{{ ansible_env | dict2items }}"
+    #   when: sourced_env is success
+
+    - name: Delete existing directory
+      file:
+        path: "{{ PROJECT_DESTINATION }}" # Specify the directory you want to delete
+        state: absent
+      tags:
+        - delete_directory
+
+    - name: Install Git on Debian-based systems (e.g., Ubuntu)
+      apt:
+        name: git
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Add SSH public key to authorized_keys
+      authorized_key:
+        user: root  # Specify the username whose authorized_keys file you want to manage
+        key: "{{ lookup('file', PROJECT_PIM_KEY_DESTINATION + '.pub') }}"
+        state: present  # You can use 'absent' to remove a key
+
+    - name: Clone Git repository
+      git:
+        repo: "{{ GIT_PROJECT }}" # Replace with your Git repository URL
+        dest: "{{ PROJECT_DESTINATION }}" # Specify the destination directory for the clone
+        accept_hostkey: yes
+        key_file: "{{ PROJECT_PIM_KEY_DESTINATION }}" 
+      environment:
+        GIT_SSH_COMMAND: "ssh -i {{ PROJECT_PIM_KEY_DESTINATION }}" # Specify the SSH private key
+      register: git_clone
+      tags:
+        - git_clone
