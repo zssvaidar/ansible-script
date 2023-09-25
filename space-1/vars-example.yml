@@ -1,4 +1,4 @@
 
 GIT_PROJECT: ""
 PROJECT_DESTINATION: "/home/space/projects/1"
-PROJECT_KEY_DESTINATION: "/home/space/keys/key.pem"
+PROJECT_FILE_KEY: "/home/space/keys/key.pem"

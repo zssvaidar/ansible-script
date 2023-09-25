@@ -24,7 +24,7 @@
     - name: Add SSH public key to authorized_keys
       authorized_key:
         user: root  # Specify the username whose authorized_keys file you want to manage
-        key: "{{ lookup('file', PROJECT_KEY_DESTINATION + '.pub') }}"
+        key: "{{ lookup('file', PROJECT_FILE_KEY + '.pub') }}"
         state: present  # You can use 'absent' to remove a key
 
     - name: Clone Git repository
@@ -32,9 +32,9 @@
         repo: "{{ GIT_PROJECT }}" # Replace with your Git repository URL
         dest: "{{ PROJECT_DESTINATION }}" # Specify the destination directory for the clone
         accept_hostkey: yes
-        key_file: "{{ PROJECT_KEY_DESTINATION }}" 
+        key_file: "{{ PROJECT_FILE_KEY }}" 
       environment:
-        GIT_SSH_COMMAND: "ssh -i {{ PROJECT_KEY_DESTINATION }}" # Specify the SSH private key
+        GIT_SSH_COMMAND: "ssh -i {{ PROJECT_FILE_KEY }}" # Specify the SSH private key
       register: git_clone
       tags:
         - git_clone
