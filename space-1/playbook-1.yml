@@ -8,19 +8,6 @@
         name: vim
         state: present
 
-    # - name: Source the environment file
-    #   shell: bash .env.sh && echo "Environment sourced"
-    #   environment:
-    #     PATH: "{{ ansible_env.PATH }}"
-    #   register: sourced_env
-    #   changed_when: true  # Indicate that this task will not always change state
-
-    # - name: Display environment variables
-    #   debug:
-    #     var: item
-    #   loop: "{{ ansible_env | dict2items }}"
-    #   when: sourced_env is success
-
     - name: Delete existing directory
       file:
         path: "{{ PROJECT_DESTINATION }}" # Specify the directory you want to delete
